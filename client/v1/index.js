@@ -283,21 +283,64 @@ const COTELE_PARIS = [
 // 🎯 TODO: New released products
 // // 1. Log if we have new products only (true or false)
 // // A new product is a product `released` less than 2 weeks.
+function releasedProducts(data){
+  var today = new Date().getTime();
+  var week = 1000*60*60*24*7;
+  data.forEach(item => {
+    var date = new Date(item.released).getTime();
+    var diff = Math.abs(today - date);
+    if(diff <= 2*week){
+      console.log(item);
+    }
+    else{
+      console.log('No new product');
+    }
+  });
+}
+releasedProducts(COTELE_PARIS);
 
 
 // 🎯 TODO: Reasonable price
 // // 1. Log if coteleparis is a reasonable price shop (true or false)
 // // A reasonable price if all the products are less than 100€
+const isBelowHundred = (value) => value < 100;
+function reasonable(data){
+  var prices = [];
+  data.forEach(item => {
+    prices.push(item.price);
+  });
+  console.log(prices.every(isBelowHundred));
+}
+reasonable(COTELE_PARIS);
 
 
 // 🎯 TODO: Find a specific product
 // 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
+function findProduct(data, uuid){
+  data.forEach(item => {
+    if(item.uuid == uuid){
+      console.log(item);
+    }
+  });
+}
 // 2. Log the product
+findProduct(COTELE_PARIS, `b56c6d88-749a-5b4c-b571-e5b5c6483131`);
 
 
 // 🎯 TODO: Delete a specific product
 // 1. Delete the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
+function deleteProduct(data, uuid){
+  for(let i=0; i<data.length; i++){
+    if(data[i].uuid == uuid){
+      delete data[i];
+    }
+  }
+}
+var copy = COTELE_PARIS;
+deleteProduct(copy, `b56c6d88-749a-5b4c-b571-e5b5c6483131`);
 // 2. Log the new list of product
+console.log(copy);
+
 
 // 🎯 TODO: Save the favorite product
 let blueJacket = {
@@ -313,8 +356,8 @@ let jacket = blueJacket;
 jacket.favorite = true;
 
 // 1. Log `blueJacket` and `jacket` variables
+console.log(blueJacket, jacket);
 // 2. What do you notice?
-
 blueJacket = {
   'link': 'https://coteleparis.com/collections/tous-les-produits-cotele/products/la-veste-bleu-roi',
   'price': 110,
@@ -335,4 +378,11 @@ blueJacket = {
 
 // 🎯 TODO: Save in localStorage
 // 1. Save MY_FAVORITE_BRANDS in the localStorage
+var localStorage = [];
+MY_FAVORITE_BRANDS.forEach(brand => {
+  if(!(localStorage.includes(brand))){
+    localStorage.push(item);
+  }
+});
 // 2. log the localStorage
+console.log(localStorage);
