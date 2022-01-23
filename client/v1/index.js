@@ -54,17 +54,17 @@ console.log(nbProducts);
 
 // 🎯 TODO: Brands name
 // 1. Create a variable and assign it the list of brands name only
-let brands = [];
+let brandsName = [];
 for(let i=0; i<marketplace.length; i++){
   let brand = marketplace[i].brand
-  if(!(brands.includes(brand))){
-    brands.push(brand)
+  if(!(brandsName.includes(brand))){
+    brandsName.push(brand)
   }
 }
 // 2. Log the variable
-console.log(brands);
+console.log(brandsName);
 // 3. Log how many brands we have
-console.log(brands.length);
+console.log(brandsName.length);
 
 
 // 🎯 TODO: Sort by price
@@ -147,19 +147,45 @@ console.log(avg());
 //   ....
 //   'brand-name-n': [{...}, {...}, ..., {...}],
 // };
-//
+const brands = {};
+brandsName.forEach(name => {
+  brands[name] = [];
+  marketplace.forEach(item => {
+    if(name == item.brand){
+      brands[name].push(item);
+    }
+  });
+});
 // 2. Log the variable
+console.log(brands);
 // 3. Log the number of products by brands
+for(var brand in brands) {
+  console.log(`brand: ${brand}, nb of products: ${brands[brand].length}`);
+};
 
 
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
+const sortedBrandsByPrice = brands;
+for(var brand in sortedBrandsByPrice){
+  brands[brand].sort(function(a, b){
+    return b.price - a.price;
+  });
+}
 // 2. Log the sort
+console.log(sortedBrandsByPrice);
 
 
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
+const sortedBrandsByDate = brands;
+for(var brand in sortedBrandsByPrice){
+  brands[brand].sort(function(a, b){
+    return b.date - a.date;
+  });
+}
 // 2. Log the sort
+console.log(sortedBrandsByDate);
 
 
 
@@ -175,7 +201,13 @@ console.log(avg());
 // 🎯 TODO: Compute the p90 price value
 // 1. Compute the p90 price value of each brand
 // The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
-
+for(var brand in sortedBrandsByPrice){
+  const percentile = 90;
+  const rank = percentile / 100;
+  const length = sortedBrandsByPrice[brand].length;
+  const indexPercentile = Math.round(rank * length);
+  console.log(`brand: ${brand}, p90 price value: ${sortedBrandsByPrice[brand][indexPercentile].price}`);
+}
 
 
 
