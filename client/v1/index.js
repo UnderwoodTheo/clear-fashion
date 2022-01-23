@@ -54,30 +54,75 @@ console.log(nbProducts);
 
 // 🎯 TODO: Brands name
 // 1. Create a variable and assign it the list of brands name only
+let brands = [];
+for(let i=0; i<marketplace.length; i++){
+  let brand = marketplace[i].brand
+  if(!(brands.includes(brand))){
+    brands.push(brand)
+  }
+}
 // 2. Log the variable
+console.log(brands);
 // 3. Log how many brands we have
+console.log(brands.length);
 
 
 // 🎯 TODO: Sort by price
 // 1. Create a function to sort the marketplace products by price
+function sortByPrice(){
+  var items = marketplace.slice(0);
+  items.sort(function(a, b){
+    return a.price - b.price;
+  });
+  return items;
+}
 // 2. Create a variable and assign it the list of products by price from lowest to highest
+const sortedByPrice = sortByPrice();
 // 3. Log the variable
+console.log(sortedByPrice.slice(0,5));
 
 
 // 🎯 TODO: Sort by date
 // 1. Create a function to sort the marketplace objects by products date
+function sortByDate(){
+  var items = marketplace.slice(0);
+  items.sort(function(a, b){
+    return a.date - b.date;
+  });
+  return items;
+}
 // 2. Create a variable and assign it the list of products by date from recent to old
+const sortedByDate = sortByDate();
 // 3. Log the variable
+console.log(sortedByDate.slice(0, 5));
 
 
 // 🎯 TODO: Filter a specific price range
 // 1. Filter the list of products between 50€ and 100€
+function filterByPrice(low, high){
+  var items = [];
+  marketplace.forEach(item => {
+    if(item.price <= high && item.price >= low){
+      items.push(item);
+    }
+  });
+  return items;
+}
 // 2. Log the list
+console.log(filterByPrice(50, 100));
 
 
 // 🎯 TODO: Average Basket
 // 1. Determine the average basket of the marketplace
+function avg(){
+  var sum = 0;
+  marketplace.forEach(item => {
+    sum += item.price;
+  });
+  return sum / marketplace.length;
+}
 // 2. Log the average
+console.log(avg());
 
 
 
