@@ -365,7 +365,10 @@ blueJacket = {
 };
 
 // 3. Update `jacket` property with `favorite` to true WITHOUT changing blueJacket properties
-
+jacket = JSON.parse(JSON.stringify(blueJacket));
+jacket.favorite = true;
+console.log(`jacket: ${jacket}`);
+console.log(`blueJacket: ${blueJacket}`);
 
 
 
