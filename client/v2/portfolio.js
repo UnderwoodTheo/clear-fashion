@@ -5,11 +5,13 @@
 let currentProducts = [];
 let currentPagination = {};
 
-// inititiqte selectors
+// inititiate selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
+const selectBrand = document.querySelector('#brand-select');
+const spanReasonablePrice = document.querySelector("#reasonable-price");
 
 /**
  * Set global value
@@ -47,6 +49,29 @@ const fetchProducts = async (page = 1, size = 12) => {
   }
 };
 
+/*const getBrands = (products) => {
+  let brandsName = [];
+  for(let i=0; i<products.length; i++){
+    let brand = products[i].brand
+    if(!(brandsName.includes(brand))){
+      brandsName.push(brand)
+    }
+  }
+  return brandsName;
+}
+
+const renderBrands = (pagination, products) => {
+  let brands = getBrands(products);
+  const options = Array.from(
+    {'length': brands.length},
+    (value, index) => `<option value="${brands[index]}">${brands[index]}</option>`
+  ).join('');
+  selectBrand.innerHTML = options;
+  //selectBrand.selectedIndex = options.value;  
+};*/
+
+
+
 /**
  * Render list of products
  * @param  {Array} products
@@ -54,6 +79,18 @@ const fetchProducts = async (page = 1, size = 12) => {
 const renderProducts = products => {
   const fragment = document.createDocumentFragment();
   const div = document.createElement('div');
+
+  /*if(selectBrand.options[selectBrand.selectedIndex].value != null){
+    const brand = products.filter(product => product.brand == selectBrand.options[selectBrand.selectedIndex].value);
+    products = brand;
+  }
+  console.log(products);*/
+
+  if(spanReasonablePrice.options[spanReasonablePrice.selectedIndex].value == 'yes'){
+    const reasonable = products.filter(product => product.price <= 50);
+    products = reasonable;
+  }
+  console.log(spanReasonablePrice.options[spanReasonablePrice.selectedIndex].value);
   const template = products
     .map(product => {
       return `
@@ -98,9 +135,11 @@ const renderIndicators = pagination => {
 };
 
 const render = (products, pagination) => {
+  //renderBrands(pagination, products);
   renderProducts(products);
   renderPagination(pagination);
   renderIndicators(pagination);
+  
 };
 
 /**
@@ -127,4 +166,12 @@ selectPage.addEventListener('change', event => {
   fetchProducts(parseInt(event.target.value), currentPagination.pageSize)
   .then(setCurrentProducts)
   .then(() => render(currentProducts, currentPagination))
+});
+
+selectBrand.addEventListener('change', event => {
+  render(currentProducts, currentPagination)
+});
+
+spanReasonablePrice.addEventListener('change', event => {
+  render(currentProducts, currentPagination);
 })
