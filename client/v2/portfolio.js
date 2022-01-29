@@ -15,6 +15,9 @@ const selectRecent = document.querySelector('#recently-released'); // feature 3
 const selectReasonable = document.querySelector('#reasonable-price'); // feature 4
 const selectSort = document.querySelector('#sort-select'); // features 5 - 6
 const spanNbNewProducts = document.querySelector('#nbNewProducts'); // feature 8
+const spanP50 = document.querySelector('#p50');
+const spanP90 = document.querySelector('#p90');
+const spanP95 = document.querySelector('#p95'); // feature 9
 
 
 /**
@@ -74,7 +77,13 @@ const renderBrands = (pagination, products) => {
   //selectBrand.selectedIndex = options.value;  
 };*/
 
-
+const percentile = (percent, products) => {
+  products.sort((a, b) => a.price - b.price);
+  const rank = percent / 100;
+  const length = products.length;
+  const indexPercentile = Math.round(rank * length);
+  return products[indexPercentile].price;
+};
 
 /**
  * Render list of products
@@ -173,6 +182,7 @@ const renderIndicators = (pagination, products) => {
 
   spanNbProducts.innerHTML = count;
 
+  // nb of recent products
   const recent = [];
   var today = new Date().getTime();
   var week = 1000*60*60*24*7;
@@ -184,6 +194,11 @@ const renderIndicators = (pagination, products) => {
     }
   });
   spanNbNewProducts.innerHTML = recent.length;
+
+  // percentiles
+  spanP50.innerHTML = percentile(50, products);
+  spanP90.innerHTML = percentile(90, products);
+  spanP95.innerHTML = percentile(95, products);
 };
 
 const render = (products, pagination) => {
