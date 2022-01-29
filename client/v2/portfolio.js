@@ -9,11 +9,12 @@ let currentPagination = {};
 const selectShow = document.querySelector('#show-select'); // feature 0
 const selectPage = document.querySelector('#page-select'); // feature 1
 const sectionProducts = document.querySelector('#products');
-const spanNbProducts = document.querySelector('#nbProducts');
+const spanNbProducts = document.querySelector('#nbProducts'); // feature 7
 const selectBrand = document.querySelector('#brand-select'); // feature 2 NOT WORKING
 const selectRecent = document.querySelector('#recently-released'); // feature 3
 const selectReasonable = document.querySelector('#reasonable-price'); // feature 4
 const selectSort = document.querySelector('#sort-select'); // features 5 - 6
+const spanNbNewProducts = document.querySelector('#nbNewProducts'); // feature 8
 
 
 /**
@@ -167,18 +168,29 @@ const renderPagination = pagination => {
  * Render page selector
  * @param  {Object} pagination
  */
-const renderIndicators = pagination => {
+const renderIndicators = (pagination, products) => {
   const {count} = pagination;
 
   spanNbProducts.innerHTML = count;
+
+  const recent = [];
+  var today = new Date().getTime();
+  var week = 1000*60*60*24*7;
+  products.forEach(product => {
+    var date = new Date(product.released).getTime();
+    var diff = Math.abs(today - date);
+    if(diff <= 2*week){
+      recent.push(product);
+    }
+  });
+  spanNbNewProducts.innerHTML = recent.length;
 };
 
 const render = (products, pagination) => {
   //renderBrands(pagination, products);
   renderProducts(products);
   renderPagination(pagination);
-  renderIndicators(pagination);
-  
+  renderIndicators(pagination, products);
 };
 
 /**
