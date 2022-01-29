@@ -6,12 +6,13 @@ let currentProducts = [];
 let currentPagination = {};
 
 // inititiate selectors
-const selectShow = document.querySelector('#show-select');
-const selectPage = document.querySelector('#page-select');
+const selectShow = document.querySelector('#show-select'); // feature 0
+const selectPage = document.querySelector('#page-select'); // feature 1
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
-const selectBrand = document.querySelector('#brand-select');
-const spanReasonablePrice = document.querySelector("#reasonable-price");
+const selectBrand = document.querySelector('#brand-select'); // feature 2
+const spanReasonablePrice = document.querySelector("#reasonable-price"); // feature 4
+const selectSort = document.querySelector("#sort-select");
 
 /**
  * Set global value
@@ -86,11 +87,22 @@ const renderProducts = products => {
   }
   console.log(products);*/
 
+  // reasonable price, ie, less than 50€
   if(spanReasonablePrice.options[spanReasonablePrice.selectedIndex].value == 'yes'){
     const reasonable = products.filter(product => product.price <= 50);
     products = reasonable;
   }
-  console.log(spanReasonablePrice.options[spanReasonablePrice.selectedIndex].value);
+
+  // sort by price asc
+  if(selectSort.options[selectSort.selectedIndex].value == 'price-asc'){
+    products.sort((a, b) => a.price - b.price);
+  }
+
+  // sort by price desc
+  if(selectSort.options[selectSort.selectedIndex].value == 'price-desc'){
+    products.sort((a, b) => b.price - a.price);
+  }
+
   const template = products
     .map(product => {
       return `
@@ -173,5 +185,9 @@ selectBrand.addEventListener('change', event => {
 });
 
 spanReasonablePrice.addEventListener('change', event => {
+  render(currentProducts, currentPagination);
+})
+
+selectSort.addEventListener('change', event => {
   render(currentProducts, currentPagination);
 })
