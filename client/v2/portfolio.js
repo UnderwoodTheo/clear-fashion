@@ -10,9 +10,10 @@ const selectShow = document.querySelector('#show-select'); // feature 0
 const selectPage = document.querySelector('#page-select'); // feature 1
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
-const selectBrand = document.querySelector('#brand-select'); // feature 2
-const spanReasonablePrice = document.querySelector("#reasonable-price"); // feature 4
-const selectSort = document.querySelector("#sort-select");
+const selectBrand = document.querySelector('#brand-select'); // feature 2 NOT WORKING
+const selectRecent = document.querySelector('#recently-released'); // feature 3
+const selectReasonable = document.querySelector('#reasonable-price'); // feature 4
+const selectSort = document.querySelector('#sort-select'); // feature 5
 
 /**
  * Set global value
@@ -87,8 +88,23 @@ const renderProducts = products => {
   }
   console.log(products);*/
 
+  // recent products
+  if(selectRecent.options[selectRecent.selectedIndex].value == 'yes'){
+    const recent = [];
+    var today = new Date().getTime();
+    var week = 1000*60*60*24*7;
+    products.forEach(product => {
+      var date = new Date(product.released).getTime();
+      var diff = Math.abs(today - date);
+      if(diff <= 2*week){
+        recent.push(product);
+      }
+    });
+    products = recent;
+  }
+
   // reasonable price, ie, less than 50€
-  if(spanReasonablePrice.options[spanReasonablePrice.selectedIndex].value == 'yes'){
+  if(selectReasonable.options[selectReasonable.selectedIndex].value == 'yes'){
     const reasonable = products.filter(product => product.price <= 50);
     products = reasonable;
   }
@@ -181,13 +197,17 @@ selectPage.addEventListener('change', event => {
 });
 
 selectBrand.addEventListener('change', event => {
-  render(currentProducts, currentPagination)
+  render(currentProducts, currentPagination);
 });
 
-spanReasonablePrice.addEventListener('change', event => {
+selectRecent.addEventListener('change', event => {
   render(currentProducts, currentPagination);
-})
+});
+
+selectReasonable.addEventListener('change', event => {
+  render(currentProducts, currentPagination);
+});
 
 selectSort.addEventListener('change', event => {
   render(currentProducts, currentPagination);
-})
+});
