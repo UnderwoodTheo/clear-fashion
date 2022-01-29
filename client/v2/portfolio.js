@@ -13,7 +13,8 @@ const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select'); // feature 2 NOT WORKING
 const selectRecent = document.querySelector('#recently-released'); // feature 3
 const selectReasonable = document.querySelector('#reasonable-price'); // feature 4
-const selectSort = document.querySelector('#sort-select'); // feature 5
+const selectSort = document.querySelector('#sort-select'); // features 5 - 6
+
 
 /**
  * Set global value
@@ -117,6 +118,16 @@ const renderProducts = products => {
   // sort by price desc
   if(selectSort.options[selectSort.selectedIndex].value == 'price-desc'){
     products.sort((a, b) => b.price - a.price);
+  }
+
+  // sort by date asc
+  if(selectSort.options[selectSort.selectedIndex].value == 'date-asc'){
+    products.sort((a, b) => new Date(b.released) - new Date(a.released));
+  }
+
+  // sort by date desc
+  if(selectSort.options[selectSort.selectedIndex].value == 'date-desc'){
+    products.sort((a, b) => new Date(a.released) - new Date(b.released));
   }
 
   const template = products
