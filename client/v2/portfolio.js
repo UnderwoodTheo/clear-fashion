@@ -18,6 +18,7 @@ const spanNbNewProducts = document.querySelector('#nbNewProducts'); // feature 8
 const spanP50 = document.querySelector('#p50');
 const spanP90 = document.querySelector('#p90');
 const spanP95 = document.querySelector('#p95'); // feature 9
+const spanLastDate = document.querySelector('#lastDate'); // feature 10
 
 
 /**
@@ -199,6 +200,10 @@ const renderIndicators = (pagination, products) => {
   spanP50.innerHTML = percentile(50, products);
   spanP90.innerHTML = percentile(90, products);
   spanP95.innerHTML = percentile(95, products);
+
+  // last released
+  products.sort((a, b) => new Date(b.released) - new Date(a.released));
+  spanLastDate.innerHTML = products[0].released;
 };
 
 const render = (products, pagination) => {
