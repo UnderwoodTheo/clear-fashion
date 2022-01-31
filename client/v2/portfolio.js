@@ -8,7 +8,7 @@ let currentPagination = {};
 // inititiate selectors
 const selectShow = document.querySelector('#show-select'); // feature 0
 const selectPage = document.querySelector('#page-select'); // feature 1
-const sectionProducts = document.querySelector('#products');
+const sectionProducts = document.querySelector('#products'); // feature 11
 const spanNbProducts = document.querySelector('#nbProducts'); // feature 7
 const selectBrand = document.querySelector('#brand-select'); // feature 2 NOT WORKING
 const selectRecent = document.querySelector('#recently-released'); // feature 3
@@ -19,7 +19,8 @@ const spanP50 = document.querySelector('#p50');
 const spanP90 = document.querySelector('#p90');
 const spanP95 = document.querySelector('#p95'); // feature 9
 const spanLastDate = document.querySelector('#lastDate'); // feature 10
-
+const checkFavorite = document.querySelector('#add-favorite'); // feature 12
+const selectFavorite = document.querySelector('#get-favorite'); // feature 13
 
 /**
  * Set global value
@@ -57,7 +58,7 @@ const fetchProducts = async (page = 1, size = 12) => {
   }
 };
 
-/*const getBrands = (products) => {
+const getBrands = (products) => {
   let brandsName = [];
   for(let i=0; i<products.length; i++){
     let brand = products[i].brand
@@ -68,15 +69,15 @@ const fetchProducts = async (page = 1, size = 12) => {
   return brandsName;
 }
 
-const renderBrands = (pagination, products) => {
+const renderBrands = products => {
   let brands = getBrands(products);
   const options = Array.from(
     {'length': brands.length},
     (value, index) => `<option value="${brands[index]}">${brands[index]}</option>`
   ).join('');
   selectBrand.innerHTML = options;
-  //selectBrand.selectedIndex = options.value;  
-};*/
+  //selectBrand.selectedIndex = brands.indexOf(s);  
+};
 
 const percentile = (percent, products) => {
   products.sort((a, b) => a.price - b.price);
@@ -84,6 +85,14 @@ const percentile = (percent, products) => {
   const length = products.length;
   const indexPercentile = Math.round(rank * length);
   return products[indexPercentile].price;
+};
+
+const addToFavorite = products => {
+  products.forEach(product => {
+    if(checkFavorite.checked == true){
+      product.favorite = true;
+    }
+  });
 };
 
 /**
@@ -94,6 +103,7 @@ const renderProducts = products => {
   const fragment = document.createDocumentFragment();
   const div = document.createElement('div');
 
+  // filter by brand
   /*if(selectBrand.options[selectBrand.selectedIndex].value != null){
     const brand = products.filter(product => product.brand == selectBrand.options[selectBrand.selectedIndex].value);
     products = brand;
@@ -141,10 +151,17 @@ const renderProducts = products => {
     products.sort((a, b) => new Date(a.released) - new Date(b.released));
   }
 
+  // filter by favorite
+  if(selectFavorite.options[selectFavorite.selectedIndex].value == 'yes'){
+    const fav = products.filter(product => product.favorite);
+    products = fav;
+  }
+
   const template = products
     .map(product => {
       return `
       <div class="product" id=${product.uuid}>
+        <input type="checkbox" id="add-favorite">
         <span>${product.brand}</span>
         <a href="${product.link}">${product.name}</a>
         <span>${product.price}</span>
@@ -152,7 +169,6 @@ const renderProducts = products => {
     `;
     })
     .join('');
-
   div.innerHTML = template;
   fragment.appendChild(div);
   sectionProducts.innerHTML = '<h2>Products</h2>';
@@ -207,10 +223,10 @@ const renderIndicators = (pagination, products) => {
 };
 
 const render = (products, pagination) => {
-  //renderBrands(pagination, products);
   renderProducts(products);
   renderPagination(pagination);
   renderIndicators(pagination, products);
+  renderBrands(products);
 };
 
 /**
@@ -252,5 +268,13 @@ selectReasonable.addEventListener('change', event => {
 });
 
 selectSort.addEventListener('change', event => {
+  render(currentProducts, currentPagination);
+});
+/*
+checkFavorite.addEventListener('click', event => {
+  render(currentProducts, currentPagination);
+});*/
+
+selectFavorite.addEventListener('change', event => {
   render(currentProducts, currentPagination);
 });
