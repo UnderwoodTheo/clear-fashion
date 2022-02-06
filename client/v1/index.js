@@ -112,6 +112,7 @@ function filterByPrice(low, high){
 console.log(filterByPrice(50, 100));
 
 
+<<<<<<< HEAD
 // 🎯 TODO: Average Basket
 // 1. Determine the average basket of the marketplace
 function avg(){
@@ -121,6 +122,10 @@ function avg(){
   });
   return sum / marketplace.length;
 }
+=======
+// 🎯 TODO: Average price
+// 1. Determine the average price of the marketplace
+>>>>>>> 22aaa04fe745ab34e6cd99c453640d670cfb4762
 // 2. Log the average
 console.log(avg());
 

@@ -19,8 +19,8 @@ const spanP50 = document.querySelector('#p50');
 const spanP90 = document.querySelector('#p90');
 const spanP95 = document.querySelector('#p95'); // feature 9
 const spanLastDate = document.querySelector('#lastDate'); // feature 10
-const checkFavorite = document.querySelector('#add-favorite'); // feature 12
-const selectFavorite = document.querySelector('#get-favorite'); // feature 13
+const checkFavorite = document.querySelector('#add-favorite'); // feature 12 NOT WORKING
+const selectFavorite = document.querySelector('#get-favorite'); // feature 13 NOT WORKING
 
 /**
  * Set global value
@@ -69,7 +69,7 @@ const getBrands = (products) => {
   return brandsName;
 }
 
-const renderBrands = products => {
+/*const renderBrands = products => {
   let brands = getBrands(products);
   const options = Array.from(
     {'length': brands.length},
@@ -77,7 +77,7 @@ const renderBrands = products => {
   ).join('');
   selectBrand.innerHTML = options;
   //selectBrand.selectedIndex = brands.indexOf(s);  
-};
+};*/
 
 const percentile = (percent, products) => {
   products.sort((a, b) => a.price - b.price);
@@ -109,6 +109,10 @@ const renderProducts = products => {
     products = brand;
   }
   console.log(products);*/
+
+  if(selectBrand.options[selectBrand.selectedIndex].value != 'all'){
+
+  }
 
   // recent products
   if(selectRecent.options[selectRecent.selectedIndex].value == 'yes'){
@@ -226,7 +230,7 @@ const render = (products, pagination) => {
   renderProducts(products);
   renderPagination(pagination);
   renderIndicators(pagination, products);
-  renderBrands(products);
+  //renderBrands(products);
 };
 
 /**
