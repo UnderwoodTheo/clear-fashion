@@ -4,6 +4,12 @@ const montlimart = require('./sources/montlimart');
 const adresseparis = require('./sources/adresseparis');
 const fs = require('fs');
 
+const {MongoClient} = require('mongodb');
+const MONGODB_URI = 'mongodb+srv://tunderwood:bstgk0UGWEtnjZFo@wepapp.prsdf.mongodb.net/WebApp?retryWrites=true&w=majority';
+const MONGODB_DB_NAME = 'WepApp';
+
+
+
 async function sandbox (/*eshop = 'https://www.dedicatedbrand.com/en/men/news'*/) {
   try {
     let products = [];
@@ -66,19 +72,14 @@ async function sandbox (/*eshop = 'https://www.dedicatedbrand.com/en/men/news'*/
     products = products.flat();
     console.log(`👕 ${products.length} total of products found`);
     // save products into json file
-    fs.writeFileSync('all_products.json', JSON.stringify(products));
-    
+    //fs.writeFileSync('all_products.json', JSON.stringify(products));
 
+    const client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true});
+    const db =  client.db(MONGODB_DB_NAME)
 
-
-
-
-
-
-
-
-
-
+    const collection = db.collection('products');
+    const result = collection.insertMany(products);
+    console.log(result);
 
 
 
@@ -90,6 +91,7 @@ async function sandbox (/*eshop = 'https://www.dedicatedbrand.com/en/men/news'*/
     console.log(products);
     console.log('done');
     process.exit(0);*/
+
   } catch (e) {
     console.error(e);
     process.exit(1);
