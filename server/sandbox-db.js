@@ -27,7 +27,9 @@ async function sandbox () {
 
     pages = [
       'https://www.loom.fr/collections/hauts',
-      'https://www.loom.fr/collections/bas'
+      'https://www.loom.fr/collections/bas',
+      'https://www.loom.fr/collections/hauts-homme',
+      'https://www.loom.fr/collections/bas-homme'
     ];
 
     console.log('\n');
