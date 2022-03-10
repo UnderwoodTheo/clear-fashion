@@ -3,54 +3,6 @@ const express = require('express');
 const helmet = require('helmet');
 const db = require('./db')
 
-/*const {MongoClient} = require('mongodb');
-const MONGODB_DB_NAME = 'WepApp';
-const MONGODB_COLLECTION = 'products';
-const MONGODB_URI = 'mongodb+srv://tunderwood:bstgk0UGWEtnjZFo@wepapp.prsdf.mongodb.net/WebApp?retryWrites=true&w=majority';
-
-let client = null;
-let database = null;
-
-const getDB = async () => {
-  try {
-    if (database) {
-      console.log('💽  Already Connected');
-      return database;
-    }
-
-    client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true});
-    database = client.db(MONGODB_DB_NAME);
-
-    console.log('💽  Connected');
-
-    return database;
-  } catch (error) {
-    console.error('🚨 MongoClient.connect...', error);
-    return null;
-  }
-};
-
-const find = async query => {
-  try {
-    const db = await getDB();
-    const collection = db.collection(MONGODB_COLLECTION);
-    const result = await collection.find(query).toArray();
-
-    return result;
-  } catch (error) {
-    console.error('🚨 collection.find...', error);
-    return null;
-  }
-};
-
-const close = async () => {
-  try {
-    await client.close();
-  } catch (error) {
-    console.error('🚨 MongoClient.close...', error); 
-  }
-};*/
-
 const PORT = 8092;
 
 const app = express();
