@@ -43,15 +43,17 @@ const fetchProducts = async (page = 1, size = 12) => {
   try {
     const response = await fetch(
       `https://clear-fashion-api.vercel.app?page=${page}&size=${size}`
+      //`https://server-inky-theta.vercel.app/products/search`
     );
     const body = await response.json();
-
+    //const data = await response.json();
+    console.log(body)
     if (body.success !== true) {
-      console.error(body);
+      console.error(response);
       return {currentProducts, currentPagination};
     }
-
     return body.data;
+    //return data
   } catch (error) {
     console.error(error);
     return {currentProducts, currentPagination};
