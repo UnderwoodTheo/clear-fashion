@@ -18,7 +18,7 @@ app.options('*', cors());
 app.get('/', (request, response) => {
   response.send({'ack': true});
 });
-// test
+
 app.get('/products/search', async (request, response) => {
   var limit = request.query.limit != null ? request.query.limit : 12;
   var brand = request.query.brand != null ? request.query.brand : /[a-zA-Z0-9]/i;
@@ -26,11 +26,10 @@ app.get('/products/search', async (request, response) => {
   var query = {"brand": brand, "price": {"$lte": price}};
   console.log(query);
   var products = await db.find({"brand":brand, "price":{'$lte':price}});
-  producs = products.sort((a, b) => a.price - b.price).slice(0, limit);
+  /*producs = products.sort((a, b) => a.price - b.price).slice(0, limit);
   var body = {}
-  body.data.result = products
-  body.success = products.length() > 0 ? true : false
-  response.send(body);
+  body.data.result = products*/
+  response.send(products.sort((a, b) => a.price - b.price).slice(0, limit));
 });
 
 app.get('/products/:id', async (request, response) => { 
