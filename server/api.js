@@ -26,7 +26,11 @@ app.get('/products/search', async (request, response) => {
   var query = {"brand": brand, "price": {"$lte": price}};
   console.log(query);
   var products = await db.find({"brand":brand, "price":{'$lte':price}});
-  response.send(products.sort((a, b) => a.price - b.price).slice(0, limit));
+  producs = products.sort((a, b) => a.price - b.price).slice(0, limit);
+  var body = {}
+  body.data.result = products
+  body.success = products.length() > 0 ? true : false
+  response.send(body);
 });
 
 app.get('/products/:id', async (request, response) => { 
