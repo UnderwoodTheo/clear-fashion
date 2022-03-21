@@ -18,7 +18,7 @@ app.options('*', cors());
 app.get('/', (request, response) => {
   response.send({'ack': true});
 });
-
+// test
 app.get('/products/search', async (request, response) => {
   var limit = request.query.limit != null ? request.query.limit : 12;
   var brand = request.query.brand != null ? request.query.brand : /[a-zA-Z0-9]/i;
