@@ -4,6 +4,7 @@
 // current products on the page
 let currentProducts = [];
 let currentPagination = {};
+let currentBrand = 'all';
 
 // inititiate selectors
 const selectShow = document.querySelector('#show-select'); // feature 0
@@ -36,24 +37,23 @@ const setCurrentProducts = ({result, meta}) => {
 /**
  * Fetch products from api
  * @param  {Number}  [page=1] - current page to fetch
- * @param  {Number}  [size=12] - size of the page
+ * @param  {Number}  [limit=12] - size of the page
  * @return {Object}
  */
-const fetchProducts = async (page = 1, size = 12) => {
+const fetchProducts = async (page = 1, limit = 12, brand = currentBrand) => {
   try {
+    currentBrand = brand;
     const response = await fetch(
-      `https://clear-fashion-api.vercel.app?page=${page}&size=${size}`
-      //`https://server-inky-theta.vercel.app/products/search`
+      //`https://clear-fashion-api.vercel.app?page=${page}&size=${limit}`
+      `https://clear-fashion-server-psi.vercel.app/products/search?page=${page}&limit=${limit}&brand=${brand}`
     );
     const body = await response.json();
-    //const data = await response.json();
     console.log(body)
     if (body.success !== true) {
-      console.error(response);
+      console.error(body);
       return {currentProducts, currentPagination};
     }
     return body.data;
-    //return data
   } catch (error) {
     console.error(error);
     return {currentProducts, currentPagination};
@@ -110,11 +110,11 @@ const renderProducts = products => {
     const brand = products.filter(product => product.brand == selectBrand.options[selectBrand.selectedIndex].value);
     products = brand;
   }
-  console.log(products);*/
+  console.log(products);
 
   if(selectBrand.options[selectBrand.selectedIndex].value != 'all'){
 
-  }
+  }*/
 
   // recent products
   if(selectRecent.options[selectRecent.selectedIndex].value == 'yes'){
@@ -262,7 +262,9 @@ selectPage.addEventListener('change', event => {
 });
 
 selectBrand.addEventListener('change', event => {
-  render(currentProducts, currentPagination);
+  fetchProducts(currentPagination.currentPage, currentPagination.pageSize, event.target.value)
+  .then(setCurrentProducts)
+  .then(() => render(currentProducts, currentPagination));
 });
 
 selectRecent.addEventListener('change', event => {
